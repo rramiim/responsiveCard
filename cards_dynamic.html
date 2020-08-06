@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Shuffle and Sort</title>
+<meta charset=utf-8 />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="w3.css">
+<script>
+const colors = ['#000000', '#2B8EAD', '#333333', '#6F98A8', '#FFFFFF', '#BFBFBF', '#EFEFEF', '#2F454E', '#72C3DC' ];
+function onloading() {
+
+	let grid = document.getElementById('grid');
+	if(grid)  {
+		grid.innerHTML ='';
+
+		for (let i = 0; i < 9; i++) {
+		  grid.innerHTML += '<div class=\'w3-third w3-container\' style=\'background-color:'+colors[i]+';\'>' + (i+1) + '</div>';
+		}
+	}
+}
+
+function shuffle() {
+	let cardNumbers = [];
+	let grid = document.getElementById('grid');
+	let matches = grid.getElementsByClassName('w3-third');
+	for (let i=0; i<matches.length; i++) {
+		cardNumbers.push(matches.item(i).outerHTML);
+	}
+	let theLength = cardNumbers.length - 1;
+	let toSwap;
+	let temp;
+	for (let i = theLength; i > 0; i--) {
+		toSwap = Math.floor(Math.random() * (i + 1));
+		temp = cardNumbers[i];
+		cardNumbers[i] = cardNumbers[toSwap];
+		cardNumbers[toSwap] = temp;
+	}
+	grid.innerHTML = cardNumbers.join('\n');
+}
+
+function sorting() {
+  var cardNumbers = [];
+  let grid = document.getElementById('grid');
+	let matches = grid.getElementsByClassName('w3-third');
+	for (let i=0; i<matches.length; i++) {
+		cardNumbers.push( {content: matches.item(i).outerHTML, index: (parseInt(matches.item(i).innerHTML)-1) } );
+	}
+	//console.info('cardNumbers: ', cardNumbers);
+	/*let theLength = cardNumbers.length - 1;
+	let toSwap;
+	let temp;
+	for (let i=theLength; i>0; i--) {
+		toSwap = parseInt(matches.item(i).innerHTML)-1;
+		console.info('toSwap: ', toSwap);
+		temp = (matches.item(i).outerHTML);
+		console.info('temp: ', temp);
+		cardsNumbers[i] = cardNumbers[toSwap];
+		cardNumbers[toSwap] = temp;
+	}*/
+ 
+  
+  cardNumbers.sort(function (x, y) {
+    return parseInt(x.index) - parseInt(y.index);
+	});
+  console.info(cardNumbers);
+  finalsorted = [];
+  for (var i = 0; i < cardNumbers.length; i++) {
+	finalsorted.push(cardNumbers[i].content);
+	}
+	grid.innerHTML = finalsorted.join('\n');
+  
+}
+
+function obsKeysToString(o, k, sep) {
+ // iterate over key array
+ return k.map(function(key) {
+    // get object property value 
+    return o[key];
+    // filter out non-empty and defined property
+  }).filter(function(v) {
+    return v;
+    // join the property value array with the separator
+  }).join(sep);
+}
+</script>
+</head>
+<body onload="onloading()" style="background-color:#EFEFEF">
+
+<div class="w3-container">
+<center>Shuffle and Sort</center>
+</div>
+
+<div style="width: 50%">
+	<aside style="width:20%; float: right; position:relative">
+		<button class="w3-button" onclick="shuffle()">Shuffle</button>
+		<button class="w3-button" onclick="sorting()">Sort</button>
+	</aside>
+	<article style="width:80%" id="grid" class="w3-row w3-border"></article>
+</div>
+</body>
+</html>       
